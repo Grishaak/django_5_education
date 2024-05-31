@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.shortcuts import redirect, reverse, render
+from django.shortcuts import redirect, reverse, render, get_object_or_404
 from django.template.loader import render_to_string
+
+from plants.models import Plant
 
 menu = [{'title': 'Главная страница', 'url': 'index'},
         {'title': 'О сайте', 'url': 'about'},
@@ -45,9 +47,13 @@ def category(request, category_id):
     return render(request, 'plants/index.html', context=data)
 
 
-def post(request, post_id):
-    return HttpResponse(f'<h1>Тут страница статьи по id.</h1>'
-                        f'<h2><p>id: {post_id}</p><h2>')
+def post(request, post_slug):
+    post = get_object_or_404(Plant, slug=post_slug)
+    data = {'title': post.title,
+            'menu': menu,
+            'post': post,
+            'cat_selected': 0}
+    return render(request, 'plants/post.html', context=data)
 
 
 def addpage(request):
