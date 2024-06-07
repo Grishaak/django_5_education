@@ -2,16 +2,19 @@
 {% block content %}
 <ul class="list-articles">
     {% for p in posts %}
-    {% if p.is_published %}
     <li>
+        <div class="article-panel">
+            <p class="first">Категория: {{ p.cat.name }}</p>
+            <p class="last">Категория: {{ p.time_updated|date:"d-m-Y H:i:s" }}</p>
+        </div>
         <h2>{{ p.title }}</h2>
         {% autoescape off %}
+        {{ p.cat_id__name }}
         {{ p.content|linebreaks|truncatewords:50 }}
         {% endautoescape %}
         <div class="clear"></div>
         <!--        Тут тег нужен для вызова функции из списка имен нашего urls.py-->
-        <p class="link-read-post"><a href="{% url 'post' p.id %}">Читать пост</a></p>
-        {% endif %}
+        <p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
         {% endfor %}
 </ul>
 {% endblock %}

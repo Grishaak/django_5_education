@@ -23,6 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('plants/', include('plants.urls')),
     path('', include('plants.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 handler404 = page_not_found
+
+admin.site.site_header = 'Панель администрирования'
+admin.site.index_title = 'Растения'
